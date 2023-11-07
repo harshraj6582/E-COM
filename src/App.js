@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import { ChartPieIcon } from '@heroicons/react/20/solid';
 import Checkout from './Pages/Checkout';
+import ProductDetails from './features/product-list/components/ProductDetails';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
     // Only for the Testing
     path: "/checkout",
     element: <Checkout></Checkout>,
+  },
+  {
+    // Only for the Testing
+    path: "/product-details",
+    element: <ProductDetails></ProductDetails>,
   },
 ]);
 
