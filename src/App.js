@@ -6,6 +6,7 @@ import SignupPage from './Pages/SignupPage';
 import CartPage from './Pages/Cartpage';
 
 
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -13,6 +14,7 @@ import {
   Link,
 } from "react-router-dom";
 import { ChartPieIcon } from '@heroicons/react/20/solid';
+import Checkout from './Pages/Checkout';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,11 @@ const router = createBrowserRouter([
     // Only for the Testing
     path: "/cart",
     element: <CartPage></CartPage>,
+  },
+  {
+    // Only for the Testing
+    path: "/checkout",
+    element: <Checkout></Checkout>,
   },
 ]);
 
