@@ -1,64 +1,50 @@
-import  Counter from './features/counter/Counter';
+import { Counter } from './features/counter/Counter';
 import './App.css';
-import Home from './Pages/Home';
-import LoginPage from './Pages/LoginPage';
-import SignupPage from './Pages/SignupPage';
-import CartPage from './Pages/Cartpage';
-
-
+import Home from './pages/Home';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   Link,
-} from "react-router-dom";
-import { ChartPieIcon } from '@heroicons/react/20/solid';
-import Checkout from './Pages/Checkout';
-import ProductDetails from './features/product-list/components/ProductDetails';
-import ProductDetailsPage from './Pages/ProductDetailsPage';
-
+} from 'react-router-dom';
+import Cart from './features/cart/Cart';
+import CartPage from './pages/CartPage';
+import Checkout from './pages/Checkout';
+import ProductDetailPage from './pages/ProductDetailPage';
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home></Home>
-      
-    ,
+    path: '/',
+    element: <Home></Home>,
   },
   {
-    path: "/login",
+    path: '/login',
     element: <LoginPage></LoginPage>,
   },
   {
-    path: "/signup",
+    path: '/signup',
     element: <SignupPage></SignupPage>,
   },
-  {
-    // Only for the Testing
-    path: "/cart",
+  { 
+    path: '/cart',
     element: <CartPage></CartPage>,
   },
-  {
-    // Only for the Testing
-    path: "/checkout",
+  { 
+    path: '/checkout',
     element: <Checkout></Checkout>,
   },
-  {
-    // Only for the Testing
-    path: "/product-details",
-    element: <ProductDetailsPage></ProductDetailsPage>,
+  { 
+    path: '/product-detail',
+    element: <ProductDetailPage></ProductDetailPage>,
   },
-  
 ]);
-
-
-
 
 function App() {
   return (
     <div className="App">
-     <RouterProvider router={router} />
-   
+      <RouterProvider router={router} />
     </div>
   );
 }
