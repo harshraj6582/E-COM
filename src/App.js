@@ -11,10 +11,15 @@ import {
   Link,
 } from 'react-router-dom';
 import Cart from './features/cart/Cart';
+import { selectLoggedInUser } from '../src/features/auth/authSlice'
+
 import CartPage from './pages/CartPage';
 import Checkout from './pages/Checkout';
 import ProductDetailPage from './pages/ProductDetailPage';
 import Protected from './features/auth/components/Protected';
+import { useEffect } from 'react';
+import { fetchAllProductByIdAsync } from './features/product/productSlice';
+import { useDispatch  , useSelector} from 'react-redux';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -52,6 +57,18 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+
+
+  const dispatch = useDispatch();
+  const user = useSelector(selectLoggedInUser)
+
+
+  useEffect(()=>{
+    if(user){
+      dispatch(fetchAllProductByIdAsync(user.id))
+
+    }
+  },[dispatch , user])
   return (
     <div className="App">
       <RouterProvider router={router} />
