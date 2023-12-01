@@ -50,3 +50,62 @@ export function fetchItemsByUserId(userId) {
 }
 
 
+// UPDATE 
+
+export function updateItem(update) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch('http://localhost:8080/cart/' +update.id, {
+        method: 'PATCH',
+        body: JSON.stringify(update),
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        // If the response status is not okay, reject with an error message
+        throw new Error('Failed to add item to cart');
+      }
+
+      const data = await response.json();
+      
+      resolve({ data });
+    } catch (error) {
+      // If an error occurs during the fetch or JSON parsing, reject with the error
+      reject(error);
+    }
+  });
+}
+
+
+///// DELETE ITEM FROM CART 
+
+
+
+export function deleteItemFromCart(itemId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch('http://localhost:8080/cart/'+itemId, {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        // If the response status is not okay, reject with an error message
+        throw new Error('Failed to add item to cart');
+      }
+
+      const data = await response.json();
+    
+      resolve({ data : {id: itemId} });
+    } catch (error) {
+      // If an error occurs during the fetch or JSON parsing, reject with the error
+      reject(error);
+    }
+  });
+}
+
+
