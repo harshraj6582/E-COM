@@ -4,6 +4,7 @@ import { deleteItemFromCartAsync, increment, incrementAsync, selectItems , updat
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 
 
@@ -11,6 +12,8 @@ export default function Cart() {
   const count = useSelector(selectItems);
   const dispatch = useDispatch();
   const items = useSelector(selectItems)
+
+
 
 
   const totalAmount = items.reduce((amount , item)=> item.price * item.quantity +amount,0)
@@ -29,6 +32,8 @@ export default function Cart() {
 
   return (
     <>
+
+{ !items.length  && <Navigate to = '/' replace = {true}></Navigate>}
 
       <div>
 
