@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice  } from '@reduxjs/toolkit';
-import { addToCart , fetchItemsByUserId  , updateItem , deleteItemFromCart, resetCart} from './cartAPI';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { addToCart, deleteItemFromCart, fetchItemsByUserId, resetCart, updateCart } from './cartAPI';
 
 const initialState = {
   status: 'idle',
@@ -7,58 +7,49 @@ const initialState = {
 };
 
 export const addToCartAsync = createAsyncThunk(
-  'Cart/addToCart',
+  'cart/addToCart',
   async (item) => {
     const response = await addToCart(item);
-
-    // The value we return becomes the `fulfilled` action payload
-    return response.data;
-  }
-);
-
-export const updateItemAsync = createAsyncThunk(
-  'Cart/updateItem',
-  async (update) => {
-    const response = await updateItem(update);
-
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
 
 export const fetchItemsByUserIdAsync = createAsyncThunk(
-  'Cart/fetchItemsByUserId',
+  'cart/fetchItemsByUserId',
   async (userId) => {
     const response = await fetchItemsByUserId(userId);
-
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
 
-
-
+export const updateCartAsync = createAsyncThunk(
+  'cart/updateCart',
+  async (update) => {
+    const response = await updateCart(update);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
 
 export const deleteItemFromCartAsync = createAsyncThunk(
-  'Cart/deletItemsByUserId',
+  'cart/deleteItemFromCart',
   async (itemId) => {
     const response = await deleteItemFromCart(itemId);
-
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
 
 export const resetCartAsync = createAsyncThunk(
-  'Cart/resetCart',
+  'cart/resetCart',
   async (userId) => {
     const response = await resetCart(userId);
-
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
-
 
 export const counterSlice = createSlice({
   name: 'cart',
@@ -75,48 +66,38 @@ export const counterSlice = createSlice({
       })
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-       state.items.push(action.payload)
+        state.items.push(action.payload);
       })
-
-
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-       state.items = (action.payload)
+        state.items = action.payload;
       })
-      
-      
-      .addCase(updateItemAsync.pending, (state) => {
+      .addCase(updateCartAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(updateItemAsync.fulfilled, (state, action) => {
+      .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex(item => item.id === action.payload.id )
-        state.items[index] = action.payload 
-       
+        const index =  state.items.findIndex(item=>item.id===action.payload.id)
+        state.items[index] = action.payload;
       })
-      
-      
       .addCase(deleteItemFromCartAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(deleteItemFromCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex(item => item.id === action.payload.id )
-        state.items.splice(index , 1 ) ; 
-       
+        const index =  state.items.findIndex(item=>item.id===action.payload.id)
+        state.items.splice(index,1);
       })
-      
       .addCase(resetCartAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(resetCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.items = [] ; 
-       
-      });
+        state.items = [];
+      })
   },
 });
 

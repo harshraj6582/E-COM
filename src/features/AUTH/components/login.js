@@ -1,35 +1,25 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  checkUserAsync,
-  increment,
-  incrementAsync,
-  selectError,
-  selectLoggedInUser,
-  
-} from '../authSlice';
+import { increment, incrementAsync, selectError, selectLoggedInUser } from '../authSlice';
 import { Link, Navigate } from 'react-router-dom';
-import { useForm } from "react-hook-form";
+import { checkUserAsync } from '../authSlice';
+import { useForm } from 'react-hook-form';
 
 export default function Login() {
   const dispatch = useDispatch();
   const error = useSelector(selectError)
-  const user  = useSelector(selectLoggedInUser)
+  const user = useSelector(selectLoggedInUser)
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors }
-  } = useForm()
-  console.log(errors)
-  
-  
+    formState: { errors },
+  } = useForm();
 
+  console.log(errors);
 
   return (
     <>
-    {user && <Navigate to = '/' replace = {true}></Navigate>}
-  
+      {user && <Navigate to='/' replace={true}></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -43,57 +33,75 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form  noValidate className="space-y-6 " onSubmit = {handleSubmit((data)=>{
-            dispatch(
-              checkUserAsync({email : data.email , password: data.password })
-              )
-            console.log(data)
-          })} >            <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+          <form
+            noValidate
+            onSubmit={handleSubmit((data) => {
+              dispatch(
+                checkUserAsync({ email: data.email, password: data.password })
+              );
+            })}
+            className="space-y-6"
+    
+          >
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Email address
               </label>
               <div className="mt-2">
-              <input
+                <input
                   id="email"
-                  {...register("email" , { required: "Email ID is Mandatory " , pattern:  {
-                     value : /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g,
-                     message : 'Email is Not Valid '
-                     
-                     }  })}
+                  {...register('email', {
+                    required: 'email is required',
+                    pattern: {
+                      value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
+                      message: 'email not valid',
+                    },
+                  })}
                   type="email"
-                 
-                 
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {errors.email && (
+                  <p className="text-red-500">{errors.email.message}</p>
+                )}
               </div>
-              {errors.email &&  <p className='text-red-500'>{errors.email.message}</p>}
-
             </div>
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="#"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
                     Forgot password?
                   </a>
                 </div>
               </div>
               <div className="mt-2">
-              <input
+                <input
                   id="password"
-                  {...register("password", { required: 'Password is required' })}
-
-                     
-                     type = "password"             
+                  {...register('password', {
+                    required: 'password is required',
+                  })}
+                  type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                            {errors.password &&  <p className='text-red-500'>{errors.password.message}</p>}
-                            {error&& ( <p className='text-red-500'>{error.message}</p>)}
-
+                {errors.password && (
+                  <p className="text-red-500">{errors.password.message}</p>
+                )}
               </div>
+              {error && (
+                  <p className="text-red-500">{error.message}</p>
+                )}
             </div>
 
             <div>
@@ -108,7 +116,10 @@ export default function Login() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
-            <Link to="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <Link
+              to="/signup"
+              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
               Create an Account
             </Link>
           </p>

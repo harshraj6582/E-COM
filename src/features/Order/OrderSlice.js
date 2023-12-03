@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createOrder } from './OrderAPI';
+import { createOrder } from './orderAPI';
 
 const initialState = {
   orders: [],
   status: 'idle',
-  currentOrder : null  
+  currentOrder: null,
 };
+//we may need more info of current order
 
 export const createOrderAsync = createAsyncThunk(
   'order/createOrder',
@@ -16,17 +17,13 @@ export const createOrderAsync = createAsyncThunk(
   }
 );
 
-export const orderSlice  = createSlice({
+export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    resetOrder :  (state) =>
-   {
-    state.currentOrder = null ; 
-    
+    resetOrder: (state) => {
+      state.currentOrder = null;
     },
-
-
   },
   extraReducers: (builder) => {
     builder
@@ -35,14 +32,14 @@ export const orderSlice  = createSlice({
       })
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.orders.push(action.payload) ;
-        state.currentOrder = action.payload 
+        state.orders.push(action.payload);
+        state.currentOrder = action.payload;
       });
   },
 });
 
 export const { resetOrder } = orderSlice.actions;
 
- export const selectCurrentOrder = (state) => state.order.currentOrder;
+export const selectCurrentOrder = (state) => state.order.currentOrder;
 
 export default orderSlice.reducer;

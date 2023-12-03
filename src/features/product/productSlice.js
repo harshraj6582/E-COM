@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchProductById, fetchAllProducts,fetchProductsByFilters, fetchBrands, fetchCategories } from './productAPI';
+import { fetchAllProducts,fetchProductsByFilters, fetchBrands, fetchCategories, fetchProductById } from './productAPI';
 
 const initialState = {
   products: [],
@@ -7,7 +7,7 @@ const initialState = {
   categories:[],
   status: 'idle',
   totalItems:0,
-  selectedProduct : null 
+  selectedProduct:null
 };
 
 
@@ -28,7 +28,6 @@ export const fetchAllProductByIdAsync = createAsyncThunk(
     return response.data;
   }
 );
-
 
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   'product/fetchProductsByFilters',
@@ -97,7 +96,6 @@ export const productSlice = createSlice({
         state.status = 'idle';
         state.categories = action.payload;
       })
-
       .addCase(fetchAllProductByIdAsync.pending, (state) => {
         state.status = 'loading';
       })
@@ -113,9 +111,7 @@ export const { increment } = productSlice.actions;
 export const selectAllProducts = (state) => state.product.products;
 export const selectBrands = (state) => state.product.brands;
 export const selectCategories = (state) => state.product.categories;
-
 export const selectProductById = (state) => state.product.selectedProduct;
-
 
 export const selectTotalItems = (state) => state.product.totalItems;
 

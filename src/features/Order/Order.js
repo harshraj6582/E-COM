@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   increment,
   incrementAsync,
-  } from './OrderSlice';
+} from './counterSlice';
 
 export default function Order() {
   const dispatch = useDispatch();
