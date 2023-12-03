@@ -6,7 +6,7 @@ import {
   selectItems , 
   updateItemAsync
 } from "../features/cart/cartSlice"
-import { createOrderAsync } from '../features/Order/OrderSlice';
+import { createOrderAsync, selectCurrentOrder } from '../features/Order/OrderSlice';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { Navigate } from 'react-router-dom';
 import { selectLoggedInUser, updateUserAsync } from '../features/auth/authSlice';
@@ -24,6 +24,8 @@ function Checkout() {
     formState: { errors }
   } = useForm()
 
+  const currentOrder = useSelector(selectCurrentOrder)
+
   const handleAddress = (e) =>{
     console.log(e.target.value)
      setSelectAddress(user.addresses[e.target.value])
@@ -37,9 +39,19 @@ function Checkout() {
 
   
 
-  const handleOrder = () =>{
-    const order = {items , totalAmount  , user , paymentMethod , selectedAddress}
+  const handleOrder = (e) =>{
+    const order = {items ,
+       totalAmount , 
+       totalItemsCount  ,
+        user ,
+        paymentMethod ,
+        selectedAddress,
+        status : 'pending'  
+      }
     dispatch(createOrderAsync(order))
+    //TODO - Redirect To the Order Success Page 
+    // TOD - Clear the Cart after the Order is just Done 
+    // Change the Tsock from the Server 
   }
 
 
@@ -82,6 +94,7 @@ function Checkout() {
     <>
 
 {!items.length && <Navigate to = '/' replace = {true}></Navigate>}
+{currentOrder && <Navigate to = {`/order-success/${currentOrder.id}`} replace = {true}></Navigate>}
 
 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
@@ -435,7 +448,7 @@ function Checkout() {
 
               onClick = {handleOrder}
                 
-                className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                className="flex  cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
               >
                 Order Now 
               </div>

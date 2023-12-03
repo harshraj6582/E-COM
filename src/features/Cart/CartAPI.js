@@ -93,19 +93,34 @@ export function deleteItemFromCart(itemId) {
         },
       });
 
-      if (!response.ok) {
-        // If the response status is not okay, reject with an error message
-        throw new Error('Failed to add item to cart');
-      }
+  
 
       const data = await response.json();
-    
-      resolve({ data : {id: itemId} });
+      console.log("COUNTER 1 ")
+
+      resolve({ data: { id: itemId } });
     } catch (error) {
       // If an error occurs during the fetch or JSON parsing, reject with the error
       reject(error);
     }
   });
+}
+
+
+
+
+export function resetCart(userId) {
+  // Get All the Items of the Users cart and then Delete Each of them
+
+  return new Promise(async (resolve)=>{
+    const response = await fetchItemsByUserId(userId);
+    const items = response.data ;
+    for(let item of  items){
+      await deleteItemFromCart(item.id)
+    }
+    resolve({status : 'Success'})
+  })
+ 
 }
 
 
