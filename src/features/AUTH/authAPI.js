@@ -43,3 +43,13 @@ export function updateUser(update) {
     resolve({ data });
   });
 }
+
+
+
+export function signOut(userId) {
+  return new Promise(async (resolve) => {
+   
+    // TODO: on server We Will Remove the user session Info 
+    resolve({ data : 'success' });
+  });
+}
