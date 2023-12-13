@@ -7,6 +7,7 @@ export function fetchLoggedInUserOrders(userId) {
   );
 }
 
+
 export function fetchLoggedInUser(userId) {
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/users/'+userId) 
@@ -15,7 +16,6 @@ export function fetchLoggedInUser(userId) {
   }
   );
 }
-
 
 export function updateUser(update) {
   return new Promise(async (resolve) => {
@@ -29,3 +29,5 @@ export function updateUser(update) {
     resolve({ data });
   });
 }
+
+

@@ -4,13 +4,7 @@ import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from 'react-router-dom';
-import Cart from './features/cart/Cart';
+import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 import CartPage from './pages/CartPage';
 import Checkout from './pages/Checkout';
 import ProductDetailPage from './pages/ProductDetailPage';
@@ -21,13 +15,24 @@ import { selectLoggedInUser } from './features/auth/authSlice';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import PageNotFound from './pages/404';
 import OrderSuccessPage from './pages/OrderSuccessPage';
-import UserOrders from './features/user/components/UserOrders';
 import UserOrdersPage from './pages/UserOrdersPage';
-import UserProfile from './features/user/components/UserProfile';
 import UserProfilePage from './pages/UserProfilePage';
 import { fetchLoggedInUserAsync } from './features/user/userSlice';
-import Logout from './features/auth/components/logout';
+import Logout from './features/auth/components/Logout';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
+import AdminHome from './pages/AdminHome';
+import AdminProductDetailPage from './pages/AdminProductDetailPage';
+import AdminProductFormPage from './pages/AdminProductFormPage';
+import AdminOrdersPage from './pages/AdminOrdersPage';
+import { positions, Provider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
+
+const options = {
+  timeout: 5000,
+  position: positions.BOTTOM_LEFT,
+};
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -35,6 +40,14 @@ const router = createBrowserRouter([
       <Protected>
         <Home></Home>
       </Protected>
+    ),
+  },
+  {
+    path: '/admin',
+    element: (
+      <ProtectedAdmin>
+        <AdminHome></AdminHome>
+      </ProtectedAdmin>
     ),
   },
   {
@@ -70,63 +83,83 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/order-success/:id',
+    path: '/admin/product-detail/:id',
     element: (
-      <OrderSuccessPage></OrderSuccessPage>
+      <ProtectedAdmin>
+        <AdminProductDetailPage></AdminProductDetailPage>
+      </ProtectedAdmin>
     ),
+  },
+  {
+    path: '/admin/product-form',
+    element: (
+      <ProtectedAdmin>
+        <AdminProductFormPage></AdminProductFormPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: '/admin/orders',
+    element: (
+      <ProtectedAdmin>
+        <AdminOrdersPage></AdminOrdersPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: '/admin/product-form/edit/:id',
+    element: (
+      <ProtectedAdmin>
+        <AdminProductFormPage></AdminProductFormPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: '/order-success/:id',
+    element: <OrderSuccessPage></OrderSuccessPage>,
   },
   {
     path: '/orders',
-    element: (
-      <UserOrdersPage></UserOrdersPage>
-      // we will add Page later right now using component directly.
-    ),
+    element: <UserOrdersPage></UserOrdersPage>,
   },
   {
     path: '/profile',
-    element: (
-      <UserProfilePage></UserProfilePage>
-      // we will add Page later right now using component directly.
-    ),
+    element: <UserProfilePage></UserProfilePage>,
   },
   {
     path: '/logout',
-    element: (
-      <Logout></Logout>
-      // we will add Page later right now using component directly.
-    ),
+    element: <Logout></Logout>,
   },
   {
     path: '/forgot-password',
-    element: (
-      <ForgotPasswordPage></ForgotPasswordPage>
-      // we will add Page later right now using component directly.
-    ),
+    element: <ForgotPasswordPage></ForgotPasswordPage>,
   },
   {
     path: '*',
-    element: (
-      <PageNotFound></PageNotFound>
-    ),
+    element: <PageNotFound></PageNotFound>,
   },
 ]);
 
 function App() {
-
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
 
-  useEffect(()=>{
-    if(user){
-      dispatch(fetchItemsByUserIdAsync(user.id))
-      dispatch(fetchLoggedInUserAsync(user.id))
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchItemsByUserIdAsync(user.id));
+      dispatch(fetchLoggedInUserAsync(user.id));
     }
-  },[dispatch, user])
+  }, [dispatch, user]);
 
   return (
-    <div className="App">
-      <RouterProvider router={router} />
-    </div>
+    <>
+      <div className="App">
+        <Provider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+        </Provider>
+        {/* Link must be inside the Provider */}
+      </div>
+    </>
   );
 }
 
