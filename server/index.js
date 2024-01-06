@@ -5,9 +5,21 @@ const mongoose = require('mongoose')
 const productRouters = require('../server/routes/Product')
 const categoriesRouters = require('./routes/Category')
 const brandsRouters = require('./routes/Brands')
+const cors = require('cors')
 // Middleware 
+
+
+
+
 server.use(express.json());
 // To Convert the Data Into JSON Format 
+
+
+
+
+server.use(cors({
+  exposedHeaders:['X-Total-Count']
+}))
 server.use('/products',productRouters.router)
 server.use('/categories',categoriesRouters.router)
 server.use('/brands',brandsRouters.router)

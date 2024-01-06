@@ -58,3 +58,39 @@ exports.fetchAllProducts = async (req, res) => {
         res.status(400).json(err);
       }
 };
+
+
+// Detch Products By ID 
+exports.fetchAllProductsById = async (req, res) => {
+   
+    const {id} = req.params ;
+
+    try{
+        const product = await 
+        Product.findById(id);
+        res.status(200).json(product)
+    }
+    catch (err){
+        res.status(400).json(err)
+    }
+
+   
+};
+
+exports.updateProduct = async (req, res) => {
+   
+    const {id} = req.params ;
+
+    try{
+        const product = await 
+        Product.findByIdAndUpdate(id , req.body , {new : true });
+        res.status(200).json(product)
+    }
+    catch (err){
+        res.status(400).json(err)
+    }
+
+   
+};
+
+
